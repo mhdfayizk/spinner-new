@@ -427,7 +427,7 @@
 
     /* Chips */
     .chips-container {
-      flex: 1;
+      max-height: 220px;
       min-height: 0;
       overflow-y: auto;
       padding: 12px 28px 28px;
@@ -992,13 +992,6 @@
         <button class="add-btn" id="addBtn" title="Add name">+</button>
       </div>
 
-
-      <!-- Color Theme Section -->
-      <div class="color-section">
-        <div class="color-section-title"><span>🎨</span> Color Theme</div>
-        <div class="theme-grid" id="themeGrid"></div>
-      </div>
-
       <div class="counter-row">
         <span id="counterText">0 names</span>
         <button class="clear-btn" id="clearBtn">Clear All</button>
@@ -1009,6 +1002,12 @@
           <div class="icon">🎯</div>
           <div>No participants yet.<br />Add names above to begin!</div>
         </div>
+      </div>
+
+      <!-- Color Theme Section -->
+      <div class="color-section">
+        <div class="color-section-title"><span>🎨</span> Color Theme</div>
+        <div class="theme-grid" id="themeGrid"></div>
       </div>
 
       <!-- Settings Panel (Guaranteed Winner) — slides up from bottom -->

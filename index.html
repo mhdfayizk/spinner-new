@@ -268,7 +268,6 @@
       border-left: 1px solid var(--border);
       display: flex;
       flex-direction: column;
-      overflow: hidden;
     }
 
     .panel-header {
@@ -429,6 +428,7 @@
     /* Chips */
     .chips-container {
       flex: 1;
+      min-height: 0;
       overflow-y: auto;
       padding: 12px 28px 28px;
       display: flex;
@@ -925,7 +925,8 @@
         grid-column: 1;
         border-left: none;
         border-top: 1px solid var(--border);
-        max-height: 360px;
+        max-height: 480px;
+        min-height: 0;
       }
 
       .wheel-panel {

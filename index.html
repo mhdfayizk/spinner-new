@@ -1133,6 +1133,13 @@
     let targetAngle = null;
     let lockedWinner = null;      // guaranteed winner name (or null)
 
+    // Time-based spin state for guaranteed winner
+    let isTimeBasedSpin = false;
+    let spinDuration = 0;
+    let spinStartAngle = 0;
+    let spinTargetAngle = 0;
+    let spinStartTime = 0;
+
     // Confetti
     let confettiParticles = [];
     let confettiAnimId = null;
@@ -1313,28 +1320,25 @@
       // Random velocity between 18 and 30 rad/s (at 60fps it's per frame)
       velocity = (Math.random() * 12 + 18) * (Math.PI / 180);
 
-      // If a winner is locked, auto-decelerate to that slice after a short spin
+      // If a winner is locked, use smooth time-based animation (minimum 25 seconds)
+      isTimeBasedSpin = false;
       if (lockedWinner !== null) {
         const lockedIdx = names.indexOf(lockedWinner);
         if (lockedIdx !== -1) {
-          // Delay the deceleration start so wheel visibly spins first
-          setTimeout(() => {
-            if (!isSpinning) return;
-            targetSliceIndex = lockedIdx;
-            decelerating = true;
-            targetAngle = computeTargetAngle(lockedIdx);
-          }, 1200 + Math.random() * 600);
+          isTimeBasedSpin = true;
+          spinDuration = 25000 + Math.random() * 2000; // 25s - 27s
+          spinStartAngle = angle;
+          // Calculate target angle with 40 to 50 extra full rotations for natural speed
+          const extraRotations = 40 + Math.floor(Math.random() * 10);
+          spinTargetAngle = computeTargetAngle(lockedIdx) + extraRotations * 2 * Math.PI;
+          spinStartTime = performance.now();
         }
-        spinBtn.disabled = true;
-        spinBtn.textContent = '👑 Winner locked!';
-        spinBtn.classList.add('stopping');
-        canvas.style.cursor = 'default';
-      } else {
-        spinBtn.disabled = true;
-        spinBtn.textContent = '⏸ Click a slice to stop';
-        spinBtn.classList.add('stopping');
-        canvas.style.cursor = 'crosshair';
       }
+
+      spinBtn.disabled = true;
+      spinBtn.textContent = '⏸ Click a slice to stop';
+      spinBtn.classList.add('stopping');
+      canvas.style.cursor = 'crosshair';
 
       tick();
     }
@@ -1342,6 +1346,26 @@
     let lastTime = null;
     function tick(ts) {
       if (!isSpinning) return;
+
+      if (isTimeBasedSpin) {
+        const now = performance.now();
+        const elapsed = now - spinStartTime;
+        if (elapsed >= spinDuration) {
+          angle = spinTargetAngle;
+          drawWheel();
+          finish();
+          return;
+        }
+        const x = elapsed / spinDuration;
+        // Quintic-based ease-out with zero start/end acceleration
+        const ease = 1.875 * x - 1.25 * Math.pow(x, 3) + 0.375 * Math.pow(x, 5);
+        const prevAngle = angle;
+        angle = spinStartAngle + (spinTargetAngle - spinStartAngle) * ease;
+        velocity = angle - prevAngle;
+        drawWheel();
+        animId = requestAnimationFrame(tick);
+        return;
+      }
 
       if (decelerating && targetAngle !== null) {
         // Smooth deceleration toward target
@@ -1437,6 +1461,45 @@
       drawWheel();
     }
 
+    function stopTimeBasedSpinEarly() {
+      if (!isTimeBasedSpin || decelerating) return;
+
+      decelerating = true;
+      const now = performance.now();
+      const elapsed = now - spinStartTime;
+
+      // Calculate current velocity in rad/ms
+      // Derivative of ease: ease'(x) = 1.875 * (1 - x^2)^2
+      const x = Math.min(1, elapsed / spinDuration);
+      const easeDeriv = 1.875 * Math.pow(1 - x * x, 2);
+      const currentVelocityMs = (spinTargetAngle - spinStartAngle) * easeDeriv / spinDuration;
+
+      // We want a new duration for stopping, e.g., 5000ms
+      const newDuration = 5000 + Math.random() * 1000; // 5 to 6 seconds
+
+      // Calculate required total angle to match current velocity
+      const requiredAngle = currentVelocityMs * newDuration / 1.875;
+
+      // Target angle must land on lockedIdx
+      const lockedIdx = names.indexOf(lockedWinner);
+      if (lockedIdx === -1) return;
+      const baseTargetAngle = computeTargetAngle(lockedIdx);
+
+      const rawTargetAngle = angle + requiredAngle;
+      let finalTargetAngle = baseTargetAngle + Math.round((rawTargetAngle - baseTargetAngle) / (Math.PI * 2)) * (Math.PI * 2);
+
+      // Ensure it goes forward at least a quarter rotation
+      while (finalTargetAngle < angle + Math.PI * 0.5) {
+        finalTargetAngle += Math.PI * 2;
+      }
+
+      // Update spin variables for the deceleration phase
+      spinStartAngle = angle;
+      spinTargetAngle = finalTargetAngle;
+      spinStartTime = now;
+      spinDuration = newDuration;
+    }
+
     function showWinnerModal(name, color) {
       const modal = document.getElementById('winnerModal');
       const nameEl = document.getElementById('modalWinnerName');
@@ -1464,9 +1527,12 @@
     //  Canvas click → stop on that slice
     // ─────────────────────────────────────────────
     canvas.addEventListener('click', (e) => {
-      // Locked mode: no manual click-to-stop
-      if (lockedWinner !== null) return;
       if (!isSpinning || decelerating) return;
+
+      if (isTimeBasedSpin) {
+        stopTimeBasedSpinEarly();
+        return;
+      }
 
       const rect = canvas.getBoundingClientRect();
       const size = canvas.parentElement.clientWidth;

@@ -1,0 +1,11 @@
+{
+  "name": "spinner-wheel",
+  "version": "1.0.0",
+  "description": "A fully customizable spinner wheel app.",
+  "scripts": {
+    "dev": "vite"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}

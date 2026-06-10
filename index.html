@@ -287,59 +287,7 @@
       color: var(--text-dim);
     }
 
-    /* Settings panel (collapsible, opens upward from bottom) */
-    .settings-panel {
-      overflow: hidden;
-      max-height: 0;
-      transition: max-height 0.38s cubic-bezier(0.4, 0, 0.2, 1);
-    }
 
-    .settings-panel.open {
-      max-height: 260px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    /* Bottom settings bar — always visible */
-    .settings-bar {
-      padding: 14px 28px;
-      border-top: 1px solid var(--border);
-      background: var(--surface);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .settings-btn {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 9px 22px;
-      background: var(--surface2);
-      border: 1.5px solid var(--border);
-      border-radius: 50px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--text-dim);
-      cursor: pointer;
-      letter-spacing: 0.04em;
-      transition: border-color 0.2s, color 0.2s, background 0.2s, box-shadow 0.2s;
-      width: 100%;
-      justify-content: center;
-    }
-
-    .settings-btn:hover {
-      border-color: var(--accent);
-      color: var(--text);
-      background: rgba(124, 77, 255, 0.1);
-    }
-
-    .settings-btn.active {
-      border-color: var(--accent);
-      color: #fff;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 4px 16px rgba(124, 77, 255, 0.35);
-    }
 
     /* Input row */
     .input-row {
@@ -547,127 +495,7 @@
       flex-shrink: 0;
     }
 
-    /* ── Guaranteed Winner section ── */
-    .lock-section {
-      padding: 14px 28px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
 
-    .lock-label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-    }
-
-    .lock-label .lock-icon {
-      font-size: 1rem;
-    }
-
-    .lock-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .lock-select {
-      flex: 1;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.9rem;
-      color: var(--text);
-      outline: none;
-      cursor: pointer;
-      transition: border-color var(--transition), box-shadow var(--transition);
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237c83a8' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
-      padding-right: 34px;
-    }
-
-    .lock-select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(124, 77, 255, 0.2);
-    }
-
-    .lock-select option {
-      background: #1e2340;
-      color: var(--text);
-    }
-
-    .lock-toggle {
-      padding: 10px 16px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 700;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
-      white-space: nowrap;
-      letter-spacing: 0.04em;
-    }
-
-    .lock-toggle.unlocked {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(124, 77, 255, 0.35);
-    }
-
-    .lock-toggle.locked {
-      background: var(--surface2);
-      color: var(--text-dim);
-      border: 1px solid var(--border);
-      box-shadow: none;
-    }
-
-    .lock-toggle:hover {
-      transform: scale(1.05);
-    }
-
-    .lock-toggle:active {
-      transform: scale(0.95);
-    }
-
-    .lock-badge {
-      display: none;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
-      border-radius: 10px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      font-size: 0.82rem;
-      color: var(--text-dim);
-      font-weight: 600;
-      animation: fadeSlideIn 0.3s ease both;
-    }
-
-    .lock-badge.visible {
-      display: flex;
-    }
-
-    @keyframes fadeSlideIn {
-      from {
-        opacity: 0;
-        transform: translateY(-6px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
 
     /* ── Winner Modal ── */
     .modal-overlay {
@@ -1015,30 +843,7 @@
         <div class="theme-grid" id="themeGrid"></div>
       </div>
 
-      <!-- Settings Panel (Guaranteed Winner) — slides up from bottom -->
-      <div class="settings-panel" id="settingsPanel">
-        <div class="lock-section" id="lockSection">
-          <div class="lock-label"><span class="lock-icon">👑</span> Guaranteed Winner</div>
-          <div class="lock-row">
-            <select class="lock-select" id="lockSelect">
-              <option value="">— choose a name —</option>
-            </select>
-            <button class="lock-toggle unlocked" id="lockToggle">🔒 Lock</button>
-          </div>
-          <div class="lock-badge" id="lockBadge">
-            <span>👑</span>
-            <span id="lockBadgeText">No one locked</span>
-            <button id="unlockBtn"
-              style="margin-left:auto;background:none;border:none;color:#ffd600;cursor:pointer;font-size:1rem;"
-              title="Remove lock">✕</button>
-          </div>
-        </div>
-      </div>
 
-      <!-- Bottom Settings Bar -->
-      <div class="settings-bar">
-        <button class="settings-btn" id="settingsBtn">⚙️ Settings</button>
-      </div>
     </aside>
   </div>
 
@@ -1131,7 +936,6 @@
     let targetSliceIndex = -1;   // slice user clicked to stop on
     let decelerating = false;
     let targetAngle = null;
-    let lockedWinner = null;      // guaranteed winner name (or null)
 
     // Confetti
     let confettiParticles = [];
@@ -1153,11 +957,6 @@
     const winnerText = document.getElementById('winnerText');
     const confettiCanvas = document.getElementById('confetti');
     const cctx = confettiCanvas.getContext('2d');
-    const lockSelect = document.getElementById('lockSelect');
-    const lockToggle = document.getElementById('lockToggle');
-    const lockBadge = document.getElementById('lockBadge');
-    const lockBadgeText = document.getElementById('lockBadgeText');
-    const unlockBtn = document.getElementById('unlockBtn');
 
     // ─────────────────────────────────────────────
     //  Resize canvas to DPR
@@ -1219,7 +1018,6 @@
         const endA = startA + sliceAngle;
         const midA = startA + sliceAngle / 2;
         const color = PALETTE[i % PALETTE.length];
-        const isLocked = lockedWinner !== null && name === lockedWinner;
 
         // Slice fill
         ctx.save();
@@ -1313,28 +1111,10 @@
       // Random velocity between 18 and 30 rad/s (at 60fps it's per frame)
       velocity = (Math.random() * 12 + 18) * (Math.PI / 180);
 
-      // If a winner is locked, auto-decelerate to that slice after a short spin
-      if (lockedWinner !== null) {
-        const lockedIdx = names.indexOf(lockedWinner);
-        if (lockedIdx !== -1) {
-          // Delay the deceleration start so wheel visibly spins first
-          setTimeout(() => {
-            if (!isSpinning) return;
-            targetSliceIndex = lockedIdx;
-            decelerating = true;
-            targetAngle = computeTargetAngle(lockedIdx);
-          }, 1200 + Math.random() * 600);
-        }
-        spinBtn.disabled = true;
-        spinBtn.textContent = '👑 Winner locked!';
-        spinBtn.classList.add('stopping');
-        canvas.style.cursor = 'default';
-      } else {
-        spinBtn.disabled = true;
-        spinBtn.textContent = '⏸ Click a slice to stop';
-        spinBtn.classList.add('stopping');
-        canvas.style.cursor = 'crosshair';
-      }
+      spinBtn.disabled = true;
+      spinBtn.textContent = '⏸ Click a slice to stop';
+      spinBtn.classList.add('stopping');
+      canvas.style.cursor = 'crosshair';
 
       tick();
     }
@@ -1464,8 +1244,6 @@
     //  Canvas click → stop on that slice
     // ─────────────────────────────────────────────
     canvas.addEventListener('click', (e) => {
-      // Locked mode: no manual click-to-stop
-      if (lockedWinner !== null) return;
       if (!isSpinning || decelerating) return;
 
       const rect = canvas.getBoundingClientRect();
@@ -1532,13 +1310,12 @@
         emptyState.classList.remove('visible');
         names.forEach((name, i) => {
           const color = PALETTE[i % PALETTE.length];
-          const isLocked = lockedWinner !== null && name === lockedWinner;
           const chip = document.createElement('div');
-          chip.className = 'chip' + (isLocked ? ' locked-winner' : '');
+          chip.className = 'chip';
           chip.style.background = `linear-gradient(135deg, ${lighten(color, 0.1)}, ${color})`;
           chip.style.boxShadow = `0 4px 14px ${color}55`;
           chip.innerHTML = `
-        ${isLocked ? '<span class="chip-crown">👑</span>' : '<div class="chip-dot"></div>'}
+        <div class="chip-dot"></div>
         <span class="chip-label" title="${escHtml(name)}">${escHtml(name)}</span>
         <button class="chip-remove" data-index="${i}" title="Remove ${escHtml(name)}">✕</button>
       `;
@@ -1547,67 +1324,9 @@
       }
 
       counterText.textContent = `${names.length} name${names.length !== 1 ? 's' : ''}`;
-      updateLockSelect();
     }
 
-    // ─────────────────────────────────────────────
-    //  Lock / Unlock Winner
-    // ─────────────────────────────────────────────
-    function updateLockSelect() {
-      const prev = lockSelect.value;
-      lockSelect.innerHTML = '<option value="">— choose a name —</option>';
-      names.forEach(name => {
-        const opt = document.createElement('option');
-        opt.value = name;
-        opt.textContent = name;
-        if (name === prev) opt.selected = true;
-        lockSelect.appendChild(opt);
-      });
-      // If locked winner was removed from names, auto-unlock
-      if (lockedWinner !== null && !names.includes(lockedWinner)) {
-        setLock(null);
-      }
-    }
 
-    function setLock(name) {
-      lockedWinner = name;
-      if (name) {
-        lockToggle.textContent = '🔓 Unlock';
-        lockToggle.className = 'lock-toggle locked';
-        lockBadgeText.textContent = `"${name}" will always win`;
-        lockBadge.classList.add('visible');
-        lockSelect.value = name;
-      } else {
-        lockToggle.textContent = '🔒 Lock';
-        lockToggle.className = 'lock-toggle unlocked';
-        lockBadge.classList.remove('visible');
-        lockSelect.value = '';
-      }
-      renderChips();
-      drawWheel();
-    }
-
-    lockToggle.addEventListener('click', () => {
-      if (isSpinning) return;
-      if (lockedWinner !== null) {
-        setLock(null);
-      } else {
-        const chosen = lockSelect.value;
-        if (!chosen) { shake(lockSelect); return; }
-        setLock(chosen);
-      }
-    });
-
-    unlockBtn.addEventListener('click', () => {
-      if (!isSpinning) setLock(null);
-    });
-
-    lockSelect.addEventListener('change', () => {
-      // If already locked, switch to new selection immediately
-      if (lockedWinner !== null && lockSelect.value) {
-        setLock(lockSelect.value);
-      }
-    });
 
     function escHtml(s) {
       return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -1641,20 +1360,12 @@
     clearBtn.addEventListener('click', () => {
       if (isSpinning) return;
       names = [];
-      setLock(null);
       renderChips();
       drawWheel();
       resultBanner.classList.remove('visible');
     });
 
-    // Settings toggle
-    document.getElementById('settingsBtn').addEventListener('click', () => {
-      const panel = document.getElementById('settingsPanel');
-      const btn = document.getElementById('settingsBtn');
-      const isOpen = panel.classList.toggle('open');
-      btn.classList.toggle('active', isOpen);
-      btn.textContent = isOpen ? '✕ Close' : '⚙ Settings';
-    });
+
 
     // Modal buttons
     document.getElementById('modalCloseBtn').addEventListener('click', closeWinnerModal);
